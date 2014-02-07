@@ -4,49 +4,68 @@
  */
 package appscool;
 
+
+
+
+import appscool.model.database.SQLRequestHandler;
+import appscool.presenter.admin.employees.AddEmployeeController;
+import java.io.File;
+import java.nio.file.FileSystems;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
  *
  * @author khadre
  */
-public class AppScool extends Application {
+public class AppScool extends Application{
+
+   // private Stage stage = new Stage();
+
+    private static final String separator = FileSystems.getDefault().getSeparator();
+    private static String mainStructure = separator + "appscool";
 
     @Override
-    public void start(Stage primaryStage) {
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Administrateur");
-            }
-        });
+    public void start(Stage primaryStage){
+        try {
 
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
+            SQLRequestHandler sql_rqh = new SQLRequestHandler();
+            //File file = new File("");
+            //File file_to_read = new File(file.getAbsolutePath() +"\\appscool\\view\\admin\\employees" +"AddEmployeeView.fxml");
+            //String folderPath = "/appscool/view/admin/employees/";
+            String fileName = "DeleteEmployeeView.fxml";
 
-        Scene scene = new Scene(root, 300, 250);
+            String defaultPath = new File("").getAbsolutePath().toString()
+        			+ mainStructure;
+            String folderPath = defaultPath + separator + "view" + separator + "admin" + separator+
+                    "employees" + separator;
 
-        primaryStage.setTitle("AppScool ");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+           System.out.println("default path : " + folderPath);
+            /*System.out.println("file not found");*/
+            //URL url = AppScool.class.getResource(defaultPath + separator + "AddEmployeeView.fxml");
+            //AnchorPane root =  FXMLLoader.load(Application.class.getResource("/appscool/view/admin/employees/DeleteEmployeeView.fxml"));
+            AddEmployeeController page = new AddEmployeeController();
+            //AnchorPane page = (AddEmployeeController) replaceSceneContent(AddEmployeeController.getFilePath());
+           // primaryStage.setTitle("Add Employee");
+
+
+            Scene scene = new Scene(page.getRoot());
+            primaryStage.setScene(scene);
+
+            primaryStage.show();
+        } catch (Exception ex) {
+             String defaultPath = new File("").getAbsolutePath().toString()
+        			+ mainStructure;
+
+            System.out.println("default path : " + defaultPath);
+            Logger.getLogger(AppScool.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
     }
-
-    /**
-     * The main() method is ignored in correctly deployed JavaFX application.
-     * main() serves only as fallback in case the application can not be
-     * launched through deployment artifacts, e.g., in IDEs with limited FX
-     * support. NetBeans ignores main().
-     *
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         launch(args);
     }
